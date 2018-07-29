@@ -11,8 +11,7 @@ Amazon-like storefront with Node.js and MySQL using CLI
 </table>
 
 ## Video Link
-Here is a video link to the working project. :  https://iharsh234.github.io/WebApp/
-![Screenshot](http://www.becoskie.com/resfold/images/bam_2.gif)
+Here is a video link to the working project :  http://www.becoskie.com/bamazon.html
 
 
 ## Application
