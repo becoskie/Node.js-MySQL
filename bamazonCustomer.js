@@ -8,23 +8,22 @@ var cart = [];
 var purchaseQuestions = [
     {
         type: "input",
-        message: "Enter the id of the item",
-        name: "id"
+        message: "To add to your order enter the id of the item:".magenta.bold,
+        name: "id",
+        validate: validateName
     },
     {
         type: "input",
-        message: "How many?",
-        name: "qty"
+        message: "How many would you like?".magenta.bold,
+        name: "qty",
+        validate: validateName
     }
 ];
 
 var connection = mysql.createConnection({
     host: "localhost",
-    // Your port; if not 3306
     port: 8889,
-    // Your username
     user: "root",
-    // Your password
     password: "root",
     database: "bamazon"
 });
@@ -35,6 +34,7 @@ figlet('   Bamazon Fine   ', function (err, data) {
         console.dir(err);
         return;
     }
+    console.log("\n \n");
     console.log(chalk.bgMagenta(data));
     tag();
 });
@@ -42,21 +42,23 @@ figlet('   Bamazon Fine   ', function (err, data) {
 showStore();
 
 
+function validateName(name){
+    return name !== '';
+}
 
 function tag() {
-    console.log('\nOnly the Products You Need, Not What You Want.\n'.magenta);
-    console.log("_____________________________________________________________\n".magenta);
+    console.log('\nOnly the Products You Need, Not What You Want.                          \n\n'.white.bgMagenta.bold);
 }
 
 function showStore() {
     var table = new Table({
-        head: ['ID'.cyan, 'Product'.cyan, 'Department'.cyan, 'Description'.cyan, 'Price'.cyan, 'Qty'.cyan]
+        head: ['ID'.white.bgMagenta, 'Product'.white.bgMagenta, 'Department'.white.bgMagenta, 'Description'.white.bgMagenta, 'Price'.white.bgMagenta, 'Qty'.white.bgMagenta]
         , colWidths: [5, 30, 20, 50, 10, 5]
     });
     connection.query("SELECT * FROM products", function (err, res) {
         for (var i = 0; i < res.length; i++) {
             table.push(
-                [res[i].id, res[i].product_name, res[i].department_name, res[i].description, parseFloat(res[i].price).toFixed(2), res[i].stock_quantity]
+                [res[i].id, res[i].product_name, res[i].department_name, res[i].description, res[i].price.toFixed(2), res[i].stock_quantity]
             );
         }
         console.log(table.toString());
@@ -70,13 +72,13 @@ function showStore() {
 function addToCart(id, quantity) {
     var query = connection.query(`SELECT product_name, price, stock_quantity FROM products WHERE id=${id}`, function (err, res) {
         var item = res[0];
-        if (item.stock_quantity > quantity) {
+        if (item.stock_quantity >= quantity) {
             var updateQty = item.stock_quantity - quantity;
             updateStock(id, updateQty);
             var total = quantity * item.price;
             cart.push(new CartItem(id, quantity, item.price, item.product_name, total));
         } else {
-            console.log("Sorry, we don't have that may available.");
+            console.log("Sorry, we don't have that may available.".red.bold);
             customerControl();
         }
     });
@@ -84,7 +86,7 @@ function addToCart(id, quantity) {
 
 function updateStock(id, quantity) {
     connection.query(`UPDATE products SET stock_quantity = ${quantity} WHERE id=${id}`, function (err, res) {
-        console.log("Item added to cart".magenta);
+        console.log("\nAdded to cart!\n".white.bgMagenta);
         customerControl();
     });
 }
@@ -94,7 +96,7 @@ function customerControl() {
         .prompt({
             name: "action",
             type: "list",
-            message: "What would you like to do?",
+            message: "What would you like to do?".magenta.bold,
             choices: [
                 "Continue Shopping",
                 "View Cart",
@@ -112,7 +114,7 @@ function customerControl() {
                     break;
 
                 case "Check Out":
-                    rangeSearch();
+                    getCartTotal();
                     break;
             }
         });
@@ -134,14 +136,36 @@ function viewCart() {
     });
     for (var i = 0; i < cart.length; i++) {
         table.push(
-            [cart[i].id, cart[i].name, parseFloat(cart[i].price).toFixed(2), cart[i].qty, parseFloat(cart[i].total).toFixed(2)]
+            [cart[i].id, cart[i].name, cart[i].price.toFixed(2), cart[i].qty, cart[i].total.toFixed(2)]
         );
     }
     console.log(table.toString());
+    customerControl();
 }
 
 
+function getCartTotal() {
+    var totalQty = [];
+    var totalPrice = [];
+    for (var i = 0; i < cart.length; i++) {
+        totalQty.push(
+            parseInt(cart[i].qty)
+        );
+        totalPrice.push(
+            parseFloat(cart[i].total.toFixed(2))
+        );
+    }
 
+    var table = new Table({
+        head: ['Total Number of Items'.cyan, 'Total Cost'.cyan]
+        , colWidths: [25, 15]
+    });
+    table.push(
+        [totalQty.reduce((a, b) => a + parseFloat(b), 0), totalPrice.reduce((a, b) => a + parseFloat(b), 0)]
+    );
+    console.log(table.toString());
+    console.log("\nThank you for shopping at Bamazon!!\n".white.bgMagenta);
+}
 
 
 
