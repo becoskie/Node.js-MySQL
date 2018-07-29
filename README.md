@@ -55,5 +55,4 @@ As the customer adds to the cart, inventory in the database changes as well.
 - [mysql](https://www.mysql.com/) - The world's most popular open source database.
 
 ### If for some odd reason... 
-Helps to move the gears.thx.
-<a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/mwFGJN9bZ"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy me a coffee"><span style="margin-left:5px">Buy me a coffee</span></a>
+<a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/mwFGJN9bZ"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy me a coffee"></a>
