@@ -47,7 +47,7 @@ function validateName(name){
 }
 
 function tag() {
-    console.log('\nOnly the Products You Need, Not What You Want.                          \n\n'.white.bgMagenta.bold);
+    console.log('\n          We Keep Your Choices Low to Keep Your Prices Low!!.           \n\n'.white.bgMagenta.bold);
 }
 
 function showStore() {
