@@ -5,7 +5,7 @@ Amazon-like storefront with Node.js and MySQL using CLI
 <table>
 <tr>
 <td>
-  A command line interface based on a retail web apps. Using node packages for the layout and controlling the interaction. The customer can view the cart, add products and purchase. Validations in place so the customer can't purchase items over the quantity that is in current inventory. Also checking that the item being added to the cart is a item available from the store. Not allowing the item in if it doesn't exist in the database. When a customer adds a product to the cart it also changes the inventory stored in the database.
+  A command line interface based on a retail web app using node packages for the layout and controlling the interaction. The customer can view the cart, add products and make purchases. Validations are in place so the customer can't purchase items over the inventory quantity, also checking that the item being added to the cart is an item available from the store, and not allowing the item to be added to the cart if it doesn't exist in the database. When a customer adds a product to the cart it also changes the inventory stored in the database.
 </td>
 </tr>
 </table>
@@ -32,7 +32,7 @@ If the customer enters a product not in the database.
 ![Screenshot](assets/bam_no.png)
 
 ### Database Updating
-As the customer adds to the cart, inventory in the database changes as well.
+As the customer adds to the cart, inventory in the database changes, as well.
 ![Screenshot](assets/bam_data.png)
 
 ## Packages used
