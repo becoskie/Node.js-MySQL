@@ -5,6 +5,7 @@ var Table = require('cli-table');
 var colors = require('colors');
 var mysql = require("mysql");
 var cart = [];
+var prodAvail = [];
 var purchaseQuestions = [
     {
         type: "input",
@@ -42,7 +43,7 @@ figlet('   Bamazon Fine   ', function (err, data) {
 showStore();
 
 
-function validateName(name){
+function validateName(name) {
     return name !== '';
 }
 
@@ -60,6 +61,7 @@ function showStore() {
             table.push(
                 [res[i].id, res[i].product_name, res[i].department_name, res[i].description, res[i].price.toFixed(2), res[i].stock_quantity]
             );
+            prodAvail.push(res[i].id);
         }
         console.log(table.toString());
         inquirer.prompt(purchaseQuestions).then(answers => {
@@ -70,6 +72,15 @@ function showStore() {
 
 
 function addToCart(id, quantity) {
+    if (prodAvail.includes(parseInt(id))) {
+        checkStock(id, quantity);
+    } else {
+        console.log("Hold on there happy shopper, we only carry products you need, not what you want!".red.bold);
+        customerControl();
+    }
+}
+
+function checkStock(id, quantity) {
     var query = connection.query(`SELECT product_name, price, stock_quantity FROM products WHERE id=${id}`, function (err, res) {
         var item = res[0];
         if (item.stock_quantity >= quantity) {
@@ -78,7 +89,7 @@ function addToCart(id, quantity) {
             var total = quantity * item.price;
             cart.push(new CartItem(id, quantity, item.price, item.product_name, total));
         } else {
-            console.log("Sorry, we don't have that may available.".red.bold);
+            console.log("Sorry, we don't have that many available.".red.bold);
             customerControl();
         }
     });
@@ -155,13 +166,13 @@ function getCartTotal() {
             parseFloat(cart[i].total.toFixed(2))
         );
     }
-
+    console.log(typeof totalPrice[0]);
     var table = new Table({
         head: ['Total Number of Items'.cyan, 'Total Cost'.cyan]
         , colWidths: [25, 15]
     });
     table.push(
-        [totalQty.reduce((a, b) => a + parseFloat(b), 0), totalPrice.reduce((a, b) => a + parseFloat(b), 0)]
+        [totalQty.reduce((a, b) => a + parseFloat(b), 0), totalPrice.reduce((a, b) => a + parseFloat(b.toFixed(2)), 0)]
     );
     console.log(table.toString());
     console.log("\nThank you for shopping at Bamazon!!\n".white.bgMagenta);
