@@ -56,4 +56,4 @@ As the customer adds to the cart, inventory in the database changes as well.
 
 ### If for some odd reason... 
 Helps to move the gears.thx.
-<a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/mwFGJN9bZ"><img src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px">Buy me a coffee</span></a>
+<a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/mwFGJN9bZ"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy me a coffee"><span style="margin-left:5px">Buy me a coffee</span></a>
